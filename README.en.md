@@ -19,7 +19,7 @@ An enhanced version of **Black Beard** (Topo Soft, 1988) for MSX, built from a c
 * **Music with the Amstrad CPC tuning**, the one the composer, César Astudillo "Gominolas", considers right.
 * **Visible potion**: the pirate turns green while it lasts and blinks before it runs out.
 * **Cannon blast**: a new sound when firing, and the camera no longer prevents the shot.
-* **64 KB ROM (ASCII16)** that openMSX and BlueMSX detect on their own, plus .cas tapes to load with `RUN"CAS:"`.
+* **64 KB ROM (ASCII16)** that openMSX and BlueMSX detect on their own.
 
 ![Original, Enhanced and Spectrum](images/comparativa_bn_color_spectrum_x2.png)
 
@@ -29,10 +29,7 @@ In [`releases/`](releases/):
 
 | File | What it is |
 |---|---|
-| `BlackBeard_color.rom` | **The recommended version.** 64 KB ROM, ASCII16, Spanish (switch to English with key 4 in the menu). |
-| `BlackBeard_kixx_color.rom` | The same, starting in English (Kixx edition). |
-| `BlackBeard_color.cas` / `BlackBeard_kixx_color.cas` | The same on tape (`RUN"CAS:"`, MSX with 64 KB). |
-| `BlackBeard_acelerado.cas` / `BlackBeard_kixx_acelerado.cas` | Only the basic speed-up, black and white like the original. |
+| `BlackBeard_color.rom` | 64 KB ROM, ASCII16, in Spanish (switch to English with key 4 in the menu). |
 
 It needs an MSX with 64 KB of RAM. The ROM has been tested in openMSX with MSX1 (HB-20P), MSX2 (HB-F900), MSX2+ and turbo R (FS-A1ST, FS-A1GT), at 50 Hz and 60 Hz.
 
@@ -62,7 +59,7 @@ python3 build_rom.py          # -> BlackBeard_color.rom
 python3 build_rom.py kixx     # -> BlackBeard_kixx_color.rom
 ```
 
-The `SJASMPLUS` and `ZX0` variables tell the scripts where the programs are. Other `build.py` options: `acelera` (speed-up only), `limite=N` (frames per loop, 5 by default), `salto=N` (vertical camera step), `musica_msx`, `marcador_original`, `sin_sprites` and `completo`. The builds give the same SHA-1 as the files in `releases/`.
+The `SJASMPLUS` and `ZX0` variables tell the scripts where the programs are. Other `build.py` options: `acelera` (speed-up only), `limite=N` (frames per loop, 5 by default), `salto=N` (vertical camera step), `musica_msx`, `marcador_original`, `sin_sprites` and `completo`. The built ROM gives the same SHA-1 as the one in `releases/`; the tapes and the Kixx ROM are not published, but they can be built.
 
 ## Repository layout
 
@@ -75,7 +72,7 @@ The `SJASMPLUS` and `ZX0` variables tell the scripts where the programs are. Oth
 | `tools/` | Extraction of the original files, speed comparison and tests. |
 | `docs/` | Technical documentation and lessons, in [Spanish](docs/es/), [English](docs/en/) and [Japanese](docs/ja/). |
 | `images/` | Screenshots and the full maps of the four decks. |
-| `releases/` | Built ROMs and tapes. |
+| `releases/` | The built ROM. |
 
 The source code comments and labels are in Spanish.
 
@@ -95,5 +92,5 @@ The source code comments and labels are in Spanish.
 * **Own code and tools** (new code in `src/`, `src/herramientas/`, `src/openmsx/`, `tools/`): MIT licence, see [LICENSE](LICENSE).
 * **Documentation, own graphics and retouches** (`docs/`, `src/graficos/`, the READMEs): CC BY-NC-SA 4.0, see [LICENSE-CC](LICENSE-CC). Retouches of game graphics cover only the retouch.
 * **ZX0** (`src/rom/dzx0_standard.asm`): BSD 3-Clause licence, see [src/rom/LICENSE_ZX0.txt](src/rom/LICENSE_ZX0.txt).
-* **The original game is not covered by these licences.** Black Beard, its code, graphics, music and texts belong to their authors and rights holders. The screenshots and maps in `images/` show the game and are not covered either. The disassembly in `src/` is published for study and preservation, and the ROMs and tapes in `releases/` contain the modified original game: they are not covered by the licences above either.
+* **The original game is not covered by these licences.** Black Beard, its code, graphics, music and texts belong to their authors and rights holders. The screenshots and maps in `images/` show the game and are not covered either. The disassembly in `src/` is published for study and preservation, and the ROM in `releases/` contains the modified original game: it is not covered by the licences above either.
 * This is a non-profit tribute. No original file (tapes, ROMs or dumps) is included. It will be taken down if any rights holder asks.

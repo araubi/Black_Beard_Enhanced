@@ -19,7 +19,7 @@ Versión mejorada de **Black Beard** (Topo Soft, 1988) para MSX, hecha a partir 
 * **Música con la afinación del Amstrad CPC**, la que el compositor, César Astudillo «Gominolas», considera buena.
 * **Pócima visible**: el pirata se vuelve verde mientras dura y parpadea antes de acabarse.
 * **Cañón con cañonazo**: un sonido nuevo al disparar, y la cámara no impide el disparo.
-* **ROM de 64 KB (ASCII16)** que openMSX y BlueMSX reconocen solos, y cintas .cas para cargar con `RUN"CAS:"`.
+* **ROM de 64 KB (ASCII16)** que openMSX y BlueMSX reconocen solos.
 
 ![Original, Enhanced y Spectrum](images/comparativa_bn_color_spectrum_x2.png)
 
@@ -29,10 +29,7 @@ En [`releases/`](releases/):
 
 | Fichero | Qué es |
 |---|---|
-| `BlackBeard_color.rom` | **La versión recomendada.** ROM de 64 KB, ASCII16, español (cambia a inglés con la tecla 4 del menú). |
-| `BlackBeard_kixx_color.rom` | La misma, empezando en inglés (edición Kixx). |
-| `BlackBeard_color.cas` / `BlackBeard_kixx_color.cas` | Las mismas en cinta (`RUN"CAS:"`, MSX con 64 KB). |
-| `BlackBeard_acelerado.cas` / `BlackBeard_kixx_acelerado.cas` | Solo la aceleración básica, en blanco y negro como el original. |
+| `BlackBeard_color.rom` | ROM de 64 KB, ASCII16, en español (cambia a inglés con la tecla 4 del menú). |
 
 Pide un MSX con 64 KB de RAM. La ROM se ha probado en openMSX con MSX1 (HB-20P), MSX2 (HB-F900), MSX2+ y turbo R (FS-A1ST, FS-A1GT), a 50 Hz y a 60 Hz.
 
@@ -62,7 +59,7 @@ python3 build_rom.py          # -> BlackBeard_color.rom
 python3 build_rom.py kixx     # -> BlackBeard_kixx_color.rom
 ```
 
-Con las variables `SJASMPLUS` y `ZX0` se indica dónde están los programas. Otras opciones de `build.py`: `acelera` (solo la aceleración), `limite=N` (cuadros por vuelta, 5 por defecto), `salto=N` (paso de la cámara vertical), `musica_msx`, `marcador_original`, `sin_sprites` y `completo`. Las compilaciones dan los mismos SHA-1 que los ficheros de `releases/`.
+Con las variables `SJASMPLUS` y `ZX0` se indica dónde están los programas. Otras opciones de `build.py`: `acelera` (solo la aceleración), `limite=N` (cuadros por vuelta, 5 por defecto), `salto=N` (paso de la cámara vertical), `musica_msx`, `marcador_original`, `sin_sprites` y `completo`. La ROM compilada da el mismo SHA-1 que la de `releases/`; las cintas y la ROM Kixx no se publican, pero se pueden compilar.
 
 ## Qué hay en el repositorio
 
@@ -75,7 +72,7 @@ Con las variables `SJASMPLUS` y `ZX0` se indica dónde están los programas. Otr
 | `tools/` | Extracción de los originales, comparativa de velocidad y pruebas. |
 | `docs/` | Documentación técnica y lecciones, en [español](docs/es/), [inglés](docs/en/) y [japonés](docs/ja/). |
 | `images/` | Capturas y los mapas completos de las cuatro plantas. |
-| `releases/` | ROM y cintas compiladas. |
+| `releases/` | La ROM compilada. |
 
 ## Documentación
 
@@ -93,5 +90,5 @@ Con las variables `SJASMPLUS` y `ZX0` se indica dónde están los programas. Otr
 * **Código y herramientas propios** (código nuevo en `src/`, `src/herramientas/`, `src/openmsx/`, `tools/`): licencia MIT, ver [LICENSE](LICENSE).
 * **Documentación, gráficos propios y retoques** (`docs/`, `src/graficos/`, los README): CC BY-NC-SA 4.0, ver [LICENSE-CC](LICENSE-CC). Los retoques sobre gráficos del juego solo cubren el retoque.
 * **ZX0** (`src/rom/dzx0_standard.asm`): licencia BSD de 3 cláusulas, ver [src/rom/LICENSE_ZX0.txt](src/rom/LICENSE_ZX0.txt).
-* **El juego original no está cubierto por estas licencias.** Black Beard, su código, gráficos, música y textos son de sus autores y titulares de derechos. Las capturas y mapas de `images/` muestran el juego y tampoco están cubiertos. El desensamblado que contiene `src/` se publica para estudio y preservación, y las ROM y cintas de `releases/` incluyen el juego original modificado: tampoco están cubiertas por las licencias de arriba.
+* **El juego original no está cubierto por estas licencias.** Black Beard, su código, gráficos, música y textos son de sus autores y titulares de derechos. Las capturas y mapas de `images/` muestran el juego y tampoco están cubiertos. El desensamblado que contiene `src/` se publica para estudio y preservación, y la ROM de `releases/` incluye el juego original modificado: tampoco está cubierta por las licencias de arriba.
 * Es un homenaje sin ánimo de lucro. No se incluye ningún fichero original (cintas, ROM ni volcados). Si algún titular de derechos lo pide, se retirará.

@@ -3,8 +3,6 @@ src/basic/
 src/graficos/losetas_2328.bin
 src/graficos/graficos_55F0.bin
 src/graficos/marcador_original.png
-*.cas
-!releases/*.cas
 # Generados por build.py y build_rom.py
 src/LOAD.BIN
 src/TEST.BIN
@@ -21,3 +19,4 @@ src/rom/*.zx0
 src/rom/*.rom
 *.sym
 __pycache__/
+*.cas

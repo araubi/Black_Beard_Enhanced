@@ -19,7 +19,7 @@
 * **Amstrad CPC の音程の音楽**。作曲者セサル・アストゥディージョ（Gominolas）が正しいと考える方です。
 * **薬の効果が見える**：効いている間は海賊が緑になり、切れる前に点滅します。
 * **大砲の発射音**：撃つときに新しい音が鳴り、カメラが発射を邪魔しなくなりました。
-* openMSX と BlueMSX が自動で認識する **64 KB ROM（ASCII16）** と、`RUN"CAS:"` で読み込む .cas テープ。
+* openMSX と BlueMSX が自動で認識する **64 KB ROM（ASCII16）** 。
 
 ![オリジナル、Enhanced、Spectrum](images/comparativa_bn_color_spectrum_x2.png)
 
@@ -29,10 +29,7 @@
 
 | ファイル | 内容 |
 |---|---|
-| `BlackBeard_color.rom` | **おすすめ版。** 64 KB ROM、ASCII16、スペイン語（メニューの 4 キーで英語に切り替え）。 |
-| `BlackBeard_kixx_color.rom` | 同じものを英語で開始（Kixx 版）。 |
-| `BlackBeard_color.cas` / `BlackBeard_kixx_color.cas` | 同じものをテープで（`RUN"CAS:"`、64 KB の MSX）。 |
-| `BlackBeard_acelerado.cas` / `BlackBeard_kixx_acelerado.cas` | 基本的な高速化のみ。オリジナルと同じ白黒。 |
+| `BlackBeard_color.rom` | 64 KB ROM、ASCII16、スペイン語（メニューの 4 キーで英語に切り替え）。 |
 
 RAM 64 KB の MSX が必要です。ROM は openMSX で MSX1（HB-20P）、MSX2（HB-F900）、MSX2+、turbo R（FS-A1ST、FS-A1GT）、50 Hz と 60 Hz で確認しています。
 
@@ -62,7 +59,7 @@ python3 build_rom.py          # -> BlackBeard_color.rom
 python3 build_rom.py kixx     # -> BlackBeard_kixx_color.rom
 ```
 
-プログラムの場所は環境変数 `SJASMPLUS` と `ZX0` で指定します。`build.py` のその他のオプション：`acelera`（高速化のみ）、`limite=N`（1ループのフレーム数、標準は 5）、`salto=N`（縦カメラの移動量）、`musica_msx`、`marcador_original`、`sin_sprites`、`completo`。ビルド結果の SHA-1 は `releases/` のファイルと一致します。
+プログラムの場所は環境変数 `SJASMPLUS` と `ZX0` で指定します。`build.py` のその他のオプション：`acelera`（高速化のみ）、`limite=N`（1ループのフレーム数、標準は 5）、`salto=N`（縦カメラの移動量）、`musica_msx`、`marcador_original`、`sin_sprites`、`completo`。ビルドした ROM の SHA-1 は `releases/` のものと一致します。テープと Kixx 版 ROM は公開していませんが、ビルドできます。
 
 ## リポジトリの構成
 
@@ -75,7 +72,7 @@ python3 build_rom.py kixx     # -> BlackBeard_kixx_color.rom
 | `tools/` | オリジナルファイルの取り出し、速度比較、テスト。 |
 | `docs/` | 技術資料と教訓。[スペイン語](docs/es/)、[英語](docs/en/)、[日本語](docs/ja/)。 |
 | `images/` | 画面写真と4つの甲板の全体マップ。 |
-| `releases/` | ビルド済みの ROM とテープ。 |
+| `releases/` | ビルド済みの ROM。 |
 
 ソースコードのコメントとラベルはスペイン語です。
 
@@ -95,5 +92,5 @@ python3 build_rom.py kixx     # -> BlackBeard_kixx_color.rom
 * **独自のコードとツール**（`src/` の新しいコード、`src/herramientas/`、`src/openmsx/`、`tools/`）：MIT ライセンス。[LICENSE](LICENSE) を参照。
 * **文書、独自のグラフィックと修正**（`docs/`、`src/graficos/`、README）：CC BY-NC-SA 4.0。[LICENSE-CC](LICENSE-CC) を参照。ゲームのグラフィックへの修正は、修正部分のみが対象です。
 * **ZX0**（`src/rom/dzx0_standard.asm`）：3条項 BSD ライセンス。[src/rom/LICENSE_ZX0.txt](src/rom/LICENSE_ZX0.txt) を参照。
-* **オリジナルのゲームはこれらのライセンスの対象外です。** Black Beard のコード、グラフィック、音楽、テキストは作者と権利者のものです。`images/` の画面写真とマップもゲームを写したものなので対象外です。`src/` の逆アセンブルは研究と保存のために公開しており、`releases/` の ROM とテープは改変したオリジナルのゲームを含むため、これらも上記ライセンスの対象外です。
+* **オリジナルのゲームはこれらのライセンスの対象外です。** Black Beard のコード、グラフィック、音楽、テキストは作者と権利者のものです。`images/` の画面写真とマップもゲームを写したものなので対象外です。`src/` の逆アセンブルは研究と保存のために公開しており、`releases/` の ROM は改変したオリジナルのゲームを含むため、これも上記ライセンスの対象外です。
 * 非営利のオマージュです。オリジナルのファイル（テープ、ROM、ダンプ）は含んでいません。権利者から要請があれば公開を取りやめます。
