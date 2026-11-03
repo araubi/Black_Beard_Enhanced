@@ -1,0 +1,43 @@
+Scripts de openMSX usados para probar y perfilar (C-BIOS_MSX1_EU, sin BASIC).
+
+boot.tcl  : mete en la RAM los bloques de la cinta (variable BBMEM = carpeta con
+            9C40.bin, 2328.bin, 55F0.bin y 8400.bin), pone SCREEN 2 como el BASIC,
+            ejecuta la pantalla de carga y salta a 92ACh.
+shot.tcl  : capturas (SHOTS="segundos nombre ...") y teclas
+            (KEYS="segundos fila máscara duración ...").
+tramos.tcl: mide el tiempo emulado de cada llamada del bucle principal
+            (PERF=fichero PERF_T0/PERF_T1 = segundos de inicio y fin).
+perfil.tcl: muestreo del PC cada ~1 ms.
+juego.tcl : pulsa ESPACIO y JUGAR y cuenta JSHOTS/JKEYS/JVERT/JPERF desde la
+            primera vuelta del bucle principal (el arranque varía); JFIN = fin.
+verifica_color.tcl: (versión en color) tras una vuelta compara la tabla de
+            color de VRAM con el búfer 1C68h convertido; VERT/JVERT = cuándo.
+graba.tcl : graba el sonido a WAV (REC_T0, REC_T1, REC_NOMBRE).
+
+Ejemplo (Linux):
+  OPENMSX_SYSTEM_DATA=.../share BBMEM=bloques OUT=capturas SHOTS="40 juego" \
+  KEYS="12 8 0x01 0.3 15 0 0x01 0.3" openmsx -machine C-BIOS_MSX1_EU \
+  -script boot.tcl -script shot.tcl
+(12 s: ESPACIO para pasar la presentación; 15 s: tecla 0 = JUGAR)
+
+Para jugar de verdad no hacen falta: basta cargar el .cas con una máquina con
+BASIC (HB-20P, HB-F900...) y RUN"CAS:".
+vuelca_spr.tcl: (con juego.tcl) JDUMP="t1 t2 ..." guarda VRAM, RAM y registros al
+            terminar VUELCA_SPRITES (VS_FIN = dirección de VUELCA_SPRITES.fin).
+analiza.py: comprueba esos volcados: que la tinta de cada figura cae donde toca,
+            que los sprites son el papel de las figuras y que no tapan tinta.
+pinta.py  : pinta un volcado de VRAM con y sin sprites, lado a lado.
+cinta.tcl + cas_prep.py: carga como la cinta (LOAD.BIN y TEST.BIN donde dice la
+            cinta, TAPION/TAPIN servidos desde los bloques sin cabecera) en
+            C-BIOS, que no tiene BASIC ni cinta; compara_rom.py compara la RAM.
+vigila_jug.tcl: cada 0,1 s escribe x, y del jugador y los contadores de scroll (8E2F, 8E30).
+tinta.py  : cuenta los píxeles de sprite que caen sobre tinta en volcados de VRAM (sirve para ver si van descolocados).
+verif_parcial.tcl: (versión con SOLO_CAMBIOS, con juego.tcl y JVP="t1 t2") en cada vuelta
+            comprueba que tras FONDO_JUEGO (933Fh) el búfer es el fondo limpio del mapa y
+            que tras VUELCA_JUEGO (935Dh) los patrones y el color del área de juego en VRAM
+            son los del búfer; apunta también cuánto tarda cada parte. Variables: VP_LOG
+            (fichero), VP_PARCIAL/VP_ENTERO (TERCIO_PARCIAL y VOLCADO_RAPIDO, para contar),
+            VP_ENT (ENTERO), VP_BUFCOL (V_PTR_BUFCOLOR) y VP_TABLA (TABLA_COLOR), del .sym.
+OJO: con «set throttle off» las capturas (screenshot) pueden salir con varios segundos de
+retraso respecto al tiempo emulado; para ver lo que hay de verdad, volcar la VRAM y pintarla
+con pinta.py.

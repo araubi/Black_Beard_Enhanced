@@ -1,0 +1,23 @@
+# Ficheros del original (se sacan de tu cinta con tools/extrae_originales.py)
+src/basic/
+src/graficos/losetas_2328.bin
+src/graficos/graficos_55F0.bin
+src/graficos/marcador_original.png
+*.cas
+!releases/*.cas
+# Generados por build.py y build_rom.py
+src/LOAD.BIN
+src/TEST.BIN
+src/LOGOTOPO.CM
+src/bloque_*.bin
+src/doble_F480.bin
+src/junto_FDE8.bin
+src/idioma_E294.bin
+src/hw_F*.bin
+src/bajo_*.bin
+src/frecuencia.inc
+src/rom/*.bin
+src/rom/*.zx0
+src/rom/*.rom
+*.sym
+__pycache__/
