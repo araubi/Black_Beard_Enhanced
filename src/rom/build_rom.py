@@ -2,11 +2,15 @@
 #   python build_rom.py            -> en color, acelerada y con música de CPC (BlackBeard_color.rom)
 #   python build_rom.py kixx       -> lo mismo, edición Kixx
 #   (cualquier otra opción de build.py se pasa tal cual, p. ej. «acelera» o «musica_msx»)
-# Necesita sjasmplus (variable SJASMPLUS) y el compresor zx0 de Einar Saukas (variable ZX0).
+#   python build_rom.py solo_ascii16   -> sin multimapper.py (la ROM de la v1.0)
+# Necesita sjasmplus (variable SJASMPLUS), el compresor zx0 de Einar Saukas (variable ZX0)
+# y, para multimapper.py (v1.1), pasmo (variable PASMO).
 import os, sys, subprocess, hashlib
 aqui = os.path.dirname(os.path.abspath(__file__)); fuentes = os.path.dirname(aqui)
 SJ = os.environ.get('SJASMPLUS', 'sjasmplus'); ZX0 = os.environ.get('ZX0', 'zx0')
 ops = [a.lower() for a in sys.argv[1:]]
+solo16 = 'solo_ascii16' in ops
+ops = [o for o in ops if o != 'solo_ascii16']
 if not any(o in ops for o in ('acelera', 'color')): ops.append('color')
 subprocess.run([sys.executable, os.path.join(fuentes, 'build.py')] + ops, check=True)
 leer = lambda f: open(os.path.join(fuentes, f), 'rb').read()
@@ -30,5 +34,7 @@ ov = os.path.join(aqui, 'overlay.bin')      # banco 3 (vacío)
 rom += (open(ov, 'rb').read() if os.path.exists(ov) else b'') .ljust(0x4000, b'\xff')
 assert len(rom) == 0x10000
 open(os.path.join(aqui, nombre), 'wb').write(rom); os.remove(os.path.join(aqui, 'BlackBeard.rom'))
+if not solo16:      # v1.1: que funcione con el mapper que elija el cargador (multimapper.py)
+    subprocess.run([sys.executable, os.path.join(aqui, 'multimapper.py'), os.path.join(aqui, nombre)], check=True)
 rom = open(os.path.join(aqui, nombre), 'rb').read()
 print(nombre, len(rom), 'bytes, SHA-1', hashlib.sha1(rom).hexdigest())

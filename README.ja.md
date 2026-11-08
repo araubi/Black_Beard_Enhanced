@@ -19,7 +19,7 @@
 * **Amstrad CPC の音程の音楽**。作曲者セサル・アストゥディージョ（Gominolas）が正しいと考える方です。
 * **薬の効果が見える**：効いている間は海賊が緑になり、切れる前に点滅します。
 * **大砲の発射音**：撃つときに新しい音が鳴り、カメラが発射を邪魔しなくなりました。
-* openMSX と BlueMSX が自動で認識する **64 KB ROM（ASCII16）** 。
+* openMSX と BlueMSX が自動で認識する **64 KB ROM（ASCII16）** 。**v1.1** からは、ローダーがどのメガロム方式（ASCII16、ASCII8、Konami SCC、Konami）を選んでも動きます。実機の **One Chip MSX（OCM）** で確認済み。
 
 ![オリジナル、Enhanced、Spectrum](images/comparativa_bn_color_spectrum_x2.png)
 
@@ -29,9 +29,18 @@
 
 | ファイル | 内容 |
 |---|---|
-| `BlackBeard_color.rom` | 64 KB ROM、ASCII16、スペイン語（メニューの 4 キーで英語に切り替え）。 |
+| `BlackBeard_color.rom` | **v1.1。** 64 KB ROM、ASCII16、スペイン語（メニューの 4 キーで英語に切り替え）。ローダーが ASCII8、Konami SCC、Konami として読み込んでも動きます。 |
 
-RAM 64 KB の MSX が必要です。ROM は openMSX で MSX1（HB-20P）、MSX2（HB-F900）、MSX2+、turbo R（FS-A1ST、FS-A1GT）、50 Hz と 60 Hz で確認しています。
+RAM 64 KB の MSX が必要です。ROM は openMSX で MSX1（HB-20P）、MSX2（HB-F900）、MSX2+、turbo R（FS-A1ST、FS-A1GT）、50 Hz と 60 Hz で確認し、実機の One Chip MSX でも動作を確認しています。
+
+### バージョン
+
+* **v1.1**（2026-11-08）：起動時に、どのメガロム方式で読み込まれたかを調べ、その方式のレジスタでバンクを切り替えます。One Chip MSX（OCM）では SD から読み込むローダーがメガロム方式を推測します。SofaROM は ASCII8 と判断して ROM にパッチを当て、mglOCM は Konami と判断したため、v1.0 はロゴやローディング画面の後で止まっていました。ゲーム内容は変わりません。
+* **v1.0**（2026-11-03）：最初の公開版（`build_rom.py solo_ascii16` でビルド）。
+
+### One Chip MSX（OCM、SX-1、SM-X、Zemmix Neo など）で遊ぶには
+
+いちばん確実なのは、**mglOCM** でメガロム方式を指定して読み込む方法です：`mglocm /f BLACKB~1.ROM`（ASCII16）。SofaRun/SofaROM の自動判定でうまくいかない場合は、ROM の種類を手動で ASCII16 にしてください。まず 3.58 MHz（F12）で試してください。
 
 ## 遊び方
 
@@ -41,7 +50,7 @@ RAM 64 KB の MSX が必要です。ROM は openMSX で MSX1（HB-20P）、MSX2�
 
 ## ビルド方法
 
-**Python 3**、**sjasmplus 1.24.0**、ROM には Einar Saukas の圧縮ツール **zx0** が必要です。このリポジトリにはオリジナルのゲームのファイルは一切含まれていません。グラフィックと2つの BASIC は**手持ちのテープ**から取り出します。
+**Python 3**、**sjasmplus 1.24.0**、ROM には Einar Saukas の圧縮ツール **zx0** と **pasmo**（`multimapper.asm` 用）が必要です。このリポジトリにはオリジナルのゲームのファイルは一切含まれていません。グラフィックと2つの BASIC は**手持ちのテープ**から取り出します。
 
 ```sh
 # 1. 手持ちのテープからオリジナルのファイルを取り出す（SHA-1 を確認）
@@ -55,11 +64,12 @@ python3 build.py kixx color   # Enhanced 英語で開始
 
 # 3. ROM（src/rom/ で）
 cd rom
-python3 build_rom.py          # -> BlackBeard_color.rom
+python3 build_rom.py          # -> BlackBeard_color.rom（v1.1）
+python3 build_rom.py solo_ascii16   # -> v1.0 の ROM
 python3 build_rom.py kixx     # -> BlackBeard_kixx_color.rom
 ```
 
-プログラムの場所は環境変数 `SJASMPLUS` と `ZX0` で指定します。`build.py` のその他のオプション：`acelera`（高速化のみ）、`limite=N`（1ループのフレーム数、標準は 5）、`salto=N`（縦カメラの移動量）、`musica_msx`、`marcador_original`、`sin_sprites`、`completo`。ビルドした ROM の SHA-1 は `releases/` のものと一致します。テープと Kixx 版 ROM は公開していませんが、ビルドできます。
+プログラムの場所は環境変数 `SJASMPLUS`、`ZX0`、`PASMO` で指定します。`build.py` のその他のオプション：`acelera`（高速化のみ）、`limite=N`（1ループのフレーム数、標準は 5）、`salto=N`（縦カメラの移動量）、`musica_msx`、`marcador_original`、`sin_sprites`、`completo`。ビルドした ROM の SHA-1 は `releases/` のものと一致します（v1.1：9f0a0dd7…。v1.0 の ROM（be2b1f45…）に `multimapper.py` を適用すると `releases/` のものとまったく同じになります）。テープと Kixx 版 ROM は公開していませんが、ビルドできます。
 
 ## リポジトリの構成
 

@@ -19,7 +19,7 @@ Versión mejorada de **Black Beard** (Topo Soft, 1988) para MSX, hecha a partir 
 * **Música con la afinación del Amstrad CPC**, la que el compositor, César Astudillo «Gominolas», considera buena.
 * **Pócima visible**: el pirata se vuelve verde mientras dura y parpadea antes de acabarse.
 * **Cañón con cañonazo**: un sonido nuevo al disparar, y la cámara no impide el disparo.
-* **ROM de 64 KB (ASCII16)** que openMSX y BlueMSX reconocen solos.
+* **ROM de 64 KB (ASCII16)** que openMSX y BlueMSX reconocen solos y que, desde la **v1.1**, funciona con el mapper que elija el cargador (ASCII16, ASCII8, Konami SCC o Konami): probada en un **One Chip MSX (OCM)** real.
 
 ![Original, Enhanced y Spectrum](images/comparativa_bn_color_spectrum_x2.png)
 
@@ -29,9 +29,18 @@ En [`releases/`](releases/):
 
 | Fichero | Qué es |
 |---|---|
-| `BlackBeard_color.rom` | ROM de 64 KB, ASCII16, en español (cambia a inglés con la tecla 4 del menú). |
+| `BlackBeard_color.rom` | **v1.1.** ROM de 64 KB, ASCII16, en español (cambia a inglés con la tecla 4 del menú). Funciona aunque el cargador la ponga como ASCII8, Konami SCC o Konami. |
 
-Pide un MSX con 64 KB de RAM. La ROM se ha probado en openMSX con MSX1 (HB-20P), MSX2 (HB-F900), MSX2+ y turbo R (FS-A1ST, FS-A1GT), a 50 Hz y a 60 Hz.
+Pide un MSX con 64 KB de RAM. La ROM se ha probado en openMSX con MSX1 (HB-20P), MSX2 (HB-F900), MSX2+ y turbo R (FS-A1ST, FS-A1GT), a 50 Hz y a 60 Hz, y en un One Chip MSX real.
+
+### Versiones
+
+* **v1.1** (8-11-2026): la ROM averigua al arrancar con qué mapper la han cargado y cambia de banco con sus registros. En el One Chip MSX (OCM) los cargadores desde SD adivinan el mapper: SofaROM la tomaba por ASCII8 (y parcheaba la ROM) y mglOCM por Konami, y la v1.0 se colgaba tras el logo o la pantalla de carga. El juego no cambia.
+* **v1.0** (3-11-2026): primera versión publicada (se compila con `build_rom.py solo_ascii16`).
+
+### En un One Chip MSX (OCM, SX-1, SM-X, Zemmix Neo…)
+
+Lo más seguro es cargarla con **mglOCM** diciéndole el mapper: `mglocm /f BLACKB~1.ROM` (ASCII16). Con SofaRun/SofaROM, si en automático da problemas, pon el tipo de ROM a mano en ASCII16. Prueba primero a 3,58 MHz (F12).
 
 ## Cómo se juega
 
@@ -41,7 +50,7 @@ Pide un MSX con 64 KB de RAM. La ROM se ha probado en openMSX con MSX1 (HB-20P),
 
 ## Cómo se compila
 
-Hace falta **Python 3**, **sjasmplus 1.24.0** y, para la ROM, el compresor **zx0** de Einar Saukas. El repositorio no incluye nada del juego original: los gráficos y los dos BASIC se sacan de **tu propia cinta**.
+Hace falta **Python 3**, **sjasmplus 1.24.0** y, para la ROM, el compresor **zx0** de Einar Saukas y **pasmo** (para `multimapper.asm`). El repositorio no incluye nada del juego original: los gráficos y los dos BASIC se sacan de **tu propia cinta**.
 
 ```sh
 # 1. Saca de tu cinta los ficheros del original (comprueba su SHA-1)
@@ -55,11 +64,12 @@ python3 build.py kixx color   # Enhanced empezando en inglés
 
 # 3. ROM (en src/rom/)
 cd rom
-python3 build_rom.py          # -> BlackBeard_color.rom
+python3 build_rom.py          # -> BlackBeard_color.rom (v1.1)
+python3 build_rom.py solo_ascii16   # -> la ROM de la v1.0
 python3 build_rom.py kixx     # -> BlackBeard_kixx_color.rom
 ```
 
-Con las variables `SJASMPLUS` y `ZX0` se indica dónde están los programas. Otras opciones de `build.py`: `acelera` (solo la aceleración), `limite=N` (cuadros por vuelta, 5 por defecto), `salto=N` (paso de la cámara vertical), `musica_msx`, `marcador_original`, `sin_sprites` y `completo`. La ROM compilada da el mismo SHA-1 que la de `releases/`; las cintas y la ROM Kixx no se publican, pero se pueden compilar.
+Con las variables `SJASMPLUS`, `ZX0` y `PASMO` se indica dónde están los programas. Otras opciones de `build.py`: `acelera` (solo la aceleración), `limite=N` (cuadros por vuelta, 5 por defecto), `salto=N` (paso de la cámara vertical), `musica_msx`, `marcador_original`, `sin_sprites` y `completo`. La ROM compilada da el mismo SHA-1 que la de `releases/` (v1.1: 9f0a0dd7…; `multimapper.py` aplicado a la ROM de la v1.0, be2b1f45…, da exactamente la de `releases/`); las cintas y la ROM Kixx no se publican, pero se pueden compilar.
 
 ## Qué hay en el repositorio
 

@@ -77,3 +77,13 @@ araubi approved Black Beard's "row-by-row transfer" as the base for MSX1. What w
 ## 10. 64 KB ROM: always ASCII16
 
 When the 32 KB ROM became too small it moved to 64 KB with a Konami mapper, and BlueMSX wouldn't start it. BlueMSX doesn't guess the mapper of a 64 KB ROM: without "AB" at 4000h it treats it as ASCII16. openMSX does count `LD (nn),A` writes to mapper registers. With ASCII16 and bank switches through `LD (77FFh),A`, both detect it on their own. Careful: the ASCII16 registers are at 6000h-7FFFh, so the bank switch has to happen while the ROM is still visible in page 1.
+
+## 11. One Chip MSX loaders guess (and patch) the mapper
+
+On a real One Chip MSX v1.0 hung, although it ran fine in openMSX and BlueMSX. The hardware was not to blame: the program that loads the ROM from SD was. SofaROM took it for "wide" ASCII8 and mglOCM, in automatic mode, for Konami. The bank switch at 77FFh, which moves page 8000h in ASCII16, hits another register in those mappers. Besides, SofaROM patches the `LD (nn),A` instructions it believes switch pages, and with unusual addresses (77FFh) it switches to a mode that patches more, including false sequences inside the compressed data.
+
+* Make the ROM detect the mapper at boot and work with any of them (`multimapper.asm`).
+* Switch banks with `LD (HL),n` and only at the standard addresses (ASCII16 6000h/7000h, ASCII8 6000h/6800h/7000h/7800h, SCC 5000h/7000h/9000h/B000h).
+* Write 1 to 6800h before running anything at 6000h-7FFFh: an ASCII8 cartridge may boot with page 0 there too.
+* Test in the emulator forcing each mapper (`openmsx -romtype ascii8 / konamiscc / konami`), because no emulator imitates those loaders.
+* To diagnose remotely without the machine: a ROM that paints the border a different colour at each loading step, plus a video from the user.

@@ -173,6 +173,7 @@ araubi がステータス表示（どくろ、瓶、帽子と上着の肖像、�
 ### 3.11 ROM
 
 * **64 KB、ASCII16 メガロム。** BlueMSX は 4000h に「AB」のない 64 KB ROM をすべて ASCII16 とみなし、openMSX は 77FFh への書き込みから判断するので、どちらも自動で認識します。バンク0は 4000h、バンク1（ロゴとページ3に行くもの）とバンク2（タイル）は 8000h。バンクの切り替えは ROM がまだページ1にある間に行います。
+* **v1.1、どのメガロム方式でも動作**（`src/rom/multimapper.asm` と `multimapper.py`、`build_rom.py` が適用）。One Chip MSX では SD から ROM を読み込むプログラムがメガロム方式を推測します。SofaROM は「wide」の ASCII8 と判断し（ページ切り替えと思われる `LD (nn),A` 命令にパッチを当て、圧縮データ内の偽物も対象になります）、mglOCM は Konami と判断していました。現在は ARRANQUE が 6800h に 1 を書き（ASCII8 はページ0が 6000h にも見えた状態で起動することがある）、前半の空き領域（7A60h）にあるインストーラを呼び、ルーチンを E580h にコピーします。DETECTA は 6000h に 3 を書いて 4000h を読みます：バンク3の目印 16h なら ASCII16、ROM の 6000h のバイトなら ASCII8、どちらでもなければ 5000h に 3 を書き、変われば Konami SCC、変わらなければ Konami。PAG2 はそれぞれのレジスタ（7000h、7000h/7800h、9000h/B000h、8000h/A000h）で 16K バンクを 8000h に置き、書き込みは常に `LD (HL),n` で行います。openMSX に ASCII16 と判断させる埋め草は `LD (7000h),A` と `LD (6000h),A` だけを使います。77FFh のようなアドレスがあると SofaROM が「wide」モードになるためです。openMSX で4方式すべて、実機の OCM（KdL 3.9.2）で mglOCM を使って確認済み。
 * ブロックは **ZX0** で圧縮（Einar Saukas。展開ルーチンは Einar Saukas と Urusergi、3条項 BSD ライセンス、`src/rom/LICENSE_ZX0.txt`）。
 * テープと同じことをします：`COLOR 1,1,1:SCREEN 2`、Topo のロゴ、ロード画面、ゲーム。RAM を探すのにテープの TEST.BIN をそのまま使うので、64 KB が必要です。
 * openMSX で C-BIOS（ヨーロッパ版と日本版の MSX1、MSX2、MSX2+）と、HB-20P・HB-F900・FS-A1ST・FS-A1GT の実 BIOS で確認：92ACh に着いた時点の RAM はテープの場合と（周波数のバイトを除いて）同じで、VRAM の検証でもエラーはありません。

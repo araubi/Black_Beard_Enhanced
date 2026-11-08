@@ -94,3 +94,13 @@ araubi aprobó el «volcado por filas» de Black Beard como base para MSX1. Lo q
 ## 10. ROM de 64 KB: siempre ASCII16
 
 Cuando la ROM de 32 KB se quedó pequeña pasó a 64 KB con mapper Konami, y BlueMSX no la arrancaba. BlueMSX no adivina el mapper de una ROM de 64 KB: si no hay «AB» en 4000h la trata como ASCII16. openMSX sí cuenta las escrituras `LD (nn),A` a registros de mapper. Con ASCII16 y los cambios de banco en `LD (77FFh),A` los dos la reconocen solos. Ojo: los registros ASCII16 están en 6000h-7FFFh, así que el cambio de banco tiene que hacerse mientras la ROM sigue visible en la página 1.
+
+## 11. Los cargadores del One Chip MSX adivinan (y parchean) el mapper
+
+En un One Chip MSX real la v1.0 se colgaba, aunque en openMSX y BlueMSX iba bien. La culpa no era del hardware, sino del programa que carga la ROM desde la SD. SofaROM la tomaba por ASCII8 «wide» y mglOCM, en automático, por Konami. El cambio de banco en 77FFh, que en ASCII16 mueve la página 8000h, en esos mappers toca otro registro. Además, SofaROM parchea las `LD (nn),A` que cree que cambian de página, y con direcciones poco habituales (77FFh) pasa a un modo que parchea más, también secuencias falsas dentro de los datos comprimidos.
+
+* Hacer que la ROM detecte el mapper al arrancar y funcione con cualquiera (`multimapper.asm`).
+* Cambiar de banco con `LD (HL),n` y solo en las direcciones estándar (ASCII16 6000h/7000h, ASCII8 6000h/6800h/7000h/7800h, SCC 5000h/7000h/9000h/B000h).
+* Escribir 1 en 6800h antes de ejecutar nada en 6000h-7FFFh: un ASCII8 puede arrancar con la página 0 también ahí.
+* Probar en el emulador forzando cada mapper (`openmsx -romtype ascii8 / konamiscc / konami`), porque ningún emulador imita a esos cargadores.
+* Para diagnosticar a distancia sin el aparato, una ROM que pinte el borde de un color en cada paso de la carga, y un vídeo del usuario.
